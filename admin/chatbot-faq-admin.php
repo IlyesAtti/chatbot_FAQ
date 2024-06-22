@@ -380,7 +380,7 @@ function sanitize_callback_function($input) {
             if (is_array($value)) {
                 return array_map('recursive_sanitize_text_field', $value);
             } else {
-                return wp_kses_post($value); // Permite HTML de bază
+                return wp_kses_post($value);
             }
         }
     }    
