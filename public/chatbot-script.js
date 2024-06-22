@@ -1,3 +1,6 @@
+/*
+* chatbot scripts
+*/
 jQuery(document).ready(function($) {
     $('.chatbot-answer').hide();
 

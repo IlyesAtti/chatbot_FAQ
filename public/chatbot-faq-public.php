@@ -4,7 +4,6 @@ function load_chatbot_public_assets() {
     wp_enqueue_style('chatbot-style', plugins_url('chatbot-style.css', __FILE__));
     wp_enqueue_script('chatbot-script', plugins_url('chatbot-script.js', __FILE__), array('jquery'), null, true);
 
-    // Adaugă stilurile configurate în setările de design
     $faq_design_data = get_option('chatbot_faq_design_data', array(
         'question_bg_color' => '#ffffff',
         'question_text_color' => '#000000',
