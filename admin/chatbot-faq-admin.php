@@ -38,6 +38,7 @@ function chatbot_faq_general_tab() {
         'title' => 'Chatbot FAQ',
         'questions' => array(),
         'active' => false,
+        'sticky_title' => false,
     ));
     ?>
     <form method="post" action="options.php">
@@ -49,6 +50,9 @@ function chatbot_faq_general_tab() {
                 <th scope="row">FAQ Title:</th>
                 <td>
                     <input type="text" name="chatbot_faq_data[title]" value="<?php echo esc_attr($faq_data['title']); ?>" size="60">
+                    <br>
+                    <input type="checkbox" id="chatbot_faq_sticky_title" name="chatbot_faq_data[sticky_title]" value="1" <?php checked(1, $faq_data['sticky_title'], true); ?>>
+                    <label for="chatbot_faq_sticky_title">Sticky Title and Close Button</label>
                 </td>
             </tr>
             <tr>
@@ -61,18 +65,19 @@ function chatbot_faq_general_tab() {
                         }
 
                         foreach ($faq_data['questions'] as $index => $faq) {
-                            $question = isset($faq['question']) ? $faq['question'] : '';
-                            $answer = isset($faq['answer']) ? $faq['answer'] : '';
+                            $question = isset($faq['question']) ? preg_replace('/^\s+|\s+$/m', '', trim($faq['question'])) : '';
+                            $answer = isset($faq['answer']) ? preg_replace('/^\s+|\s+$/m', '', trim($faq['answer'])) : '';
                             ?>
-                            <div class="faq-item">
+                            <div class="faq-item" data-index="<?php echo $index; ?>">
                                 <p>
                                     <label for="chatbot_faq_question_<?php echo $index; ?>">Question:</label><br>
-                                    <input type="text" id="chatbot_faq_question_<?php echo $index; ?>" name="chatbot_faq_data[questions][<?php echo $index; ?>][question]" value="<?php echo esc_attr($question); ?>" size="60">
+                                    <textarea id="chatbot_faq_question_<?php echo $index; ?>" name="chatbot_faq_data[questions][<?php echo $index; ?>][question]" rows="2" cols="60"><?php echo esc_textarea($question); ?></textarea>
                                 </p>
                                 <p>
                                     <label for="chatbot_faq_answer_<?php echo $index; ?>">Answer:</label><br>
                                     <textarea id="chatbot_faq_answer_<?php echo $index; ?>" name="chatbot_faq_data[questions][<?php echo $index; ?>][answer]" rows="5" cols="60"><?php echo esc_textarea($answer); ?></textarea>
                                 </p>
+                                <button class="button remove_faq_item">Remove FAQ Item</button>
                                 <hr>
                             </div>
                             <?php
@@ -98,18 +103,24 @@ function chatbot_faq_general_tab() {
                 e.preventDefault();
                 var index = $('#chatbot_faq_questions_wrapper .faq-item').length;
                 var newFaqItem = `
-                    <div class="faq-item">
+                    <div class="faq-item" data-index="${index}">
                         <p>
                             <label for="chatbot_faq_question_${index}">Question:</label><br>
-                            <input type="text" id="chatbot_faq_question_${index}" name="chatbot_faq_data[questions][${index}][question]" value="" size="60">
+                            <textarea id="chatbot_faq_question_${index}" name="chatbot_faq_data[questions][${index}][question]" rows="2" cols="60"></textarea>
                         </p>
                         <p>
                             <label for="chatbot_faq_answer_${index}">Answer:</label><br>
                             <textarea id="chatbot_faq_answer_${index}" name="chatbot_faq_data[questions][${index}][answer]" rows="5" cols="60"></textarea>
                         </p>
+                        <button class="button remove_faq_item">Remove FAQ Item</button>
                         <hr>
                     </div>`;
                 $('#chatbot_faq_questions_wrapper').append(newFaqItem);
+            });
+
+            $('#chatbot_faq_questions_wrapper').on('click', '.remove_faq_item', function(e) {
+                e.preventDefault();
+                $(this).closest('.faq-item').remove();
             });
         });
     </script>
@@ -122,10 +133,16 @@ function chatbot_faq_design_tab() {
         'question_text_color' => '#000000',
         'answer_bg_color' => '#f0f0f0',
         'answer_text_color' => '#000000',
-        'icon' => ''
+        'icon' => '',
+        'custom_icon' => '',
+        'chat_width_desktop' => '50',
+        'chat_width_mobile' => '100'
     ));
+
+    $chat_width_desktop = isset($faq_design_data['chat_width_desktop']) ? $faq_design_data['chat_width_desktop'] : '50';
+    $chat_width_mobile = isset($faq_design_data['chat_width_mobile']) ? $faq_design_data['chat_width_mobile'] : '100';
     ?>
-    <form method="post" action="options.php">
+    <form method="post" action="options.php" enctype="multipart/form-data">
         <?php
         settings_fields('chatbot_faq_design_settings');
         ?>
@@ -160,6 +177,26 @@ function chatbot_faq_design_tab() {
                         echo '</label>';
                     }
                     ?>
+                    <br><br>
+                    <label for="chatbot_faq_custom_icon">Or upload custom icon:</label>
+                    <input type="file" name="chatbot_faq_custom_icon" id="chatbot_faq_custom_icon">
+                    <?php if (!empty($faq_design_data['custom_icon'])) : ?>
+                        <img src="<?php echo esc_url($faq_design_data['custom_icon']); ?>" alt="Custom Icon" style="margin-top: 10px; width: 50px; height: 50px;">
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Chat Width Desktop (%):</th>
+                <td>
+                    <input type="range" id="chat_width_slider_desktop" name="chatbot_faq_design_data[chat_width_desktop]" value="<?php echo esc_attr($chat_width_desktop); ?>" min="10" max="100" oninput="document.getElementById('chat_width_text_desktop').value = this.value">
+                    <input type="number" id="chat_width_text_desktop" name="chatbot_faq_design_data[chat_width_desktop]" value="<?php echo esc_attr($chat_width_desktop); ?>" min="10" max="100" oninput="document.getElementById('chat_width_slider_desktop').value = this.value"> %
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Chat Width Mobile (%):</th>
+                <td>
+                    <input type="range" id="chat_width_slider_mobile" name="chatbot_faq_design_data[chat_width_mobile]" value="<?php echo esc_attr($chat_width_mobile); ?>" min="10" max="100" oninput="document.getElementById('chat_width_text_mobile').value = this.value">
+                    <input type="number" id="chat_width_text_mobile" name="chatbot_faq_design_data[chat_width_mobile]" value="<?php echo esc_attr($chat_width_mobile); ?>" min="10" max="100" oninput="document.getElementById('chat_width_slider_mobile').value = this.value"> %
                 </td>
             </tr>
         </table>
@@ -297,8 +334,8 @@ function chatbot_faq_questions_callback() {
         }
 
         foreach ($questions as $index => $faq) {
-            $question = isset($faq['question']) ? $faq['question'] : '';
-            $answer = isset($faq['answer']) ? $faq['answer'] : '';
+            $question = isset($faq['question']) ? preg_replace('/^\s+|\s+$/m', '', trim($faq['question'])) : '';
+            $answer = isset($faq['answer']) ? preg_replace('/^\s+|\s+$/m', '', trim($faq['answer'])) : '';
             ?>
             <div class="faq-item">
                 <p>
@@ -360,7 +397,7 @@ function chatbot_faq_answer_text_color_callback() {
 }
 
 function chatbot_faq_icon_callback() {
-    $faq_design_data = get_option('chatbot_faq_design_data', array('icon' => ''));
+    $faq_design_data = get_option('chatbot_faq_design_data', array('icon' => '', 'custom_icon' => ''));
     $icons_dir = plugin_dir_url(__FILE__) . '../public/icons/';
 
     $icons = array('black-left.png', 'black-right.png', 'white-left.png', 'white-right.png');
@@ -371,6 +408,13 @@ function chatbot_faq_icon_callback() {
         echo '<input type="radio" name="chatbot_faq_design_data[icon]" value="' . esc_attr($icon) . '" ' . $checked . '>';
         echo '<img src="' . esc_url($icons_dir . $icon) . '" alt="' . esc_attr($icon) . '" style="margin: 5px; width: 24px; height: 24px;">';
         echo '</label>';
+    }
+
+    echo '<br><br>';
+    echo '<label for="chatbot_faq_custom_icon">Or upload custom icon:</label>';
+    echo '<input type="file" name="chatbot_faq_custom_icon" id="chatbot_faq_custom_icon">';
+    if (!empty($faq_design_data['custom_icon'])) {
+        echo '<img src="' . esc_url($faq_design_data['custom_icon']) . '" alt="Custom Icon" style="margin-top: 10px; width: 50px; height: 50px;">';
     }
 }
 
@@ -383,10 +427,35 @@ function sanitize_callback_function($input) {
                 return wp_kses_post($value);
             }
         }
-    }    
+    }
 
     // Sanitize the input data
     $output = recursive_sanitize_text_field($input);
+
+    // Handle file upload
+    if (isset($_FILES['chatbot_faq_custom_icon']) && $_FILES['chatbot_faq_custom_icon']['size'] > 0) {
+        $uploaded = media_handle_upload('chatbot_faq_custom_icon', 0);
+        if (!is_wp_error($uploaded)) {
+            $output['custom_icon'] = wp_get_attachment_url($uploaded);
+        } else {
+            // Handle the error
+            add_settings_error('chatbot_faq_design_data', 'upload_error', 'Failed to upload custom icon.');
+        }
+    } elseif (isset($input['custom_icon'])) {
+        $output['custom_icon'] = sanitize_text_field($input['custom_icon']);
+    }
+
+    // Sanitize chat width
+    if (isset($input['chat_width_desktop']) && is_numeric($input['chat_width_desktop'])) {
+        $output['chat_width_desktop'] = min(max(intval($input['chat_width_desktop']), 10), 100); // Limit to 10-100%
+    }
+    if (isset($input['chat_width_mobile']) && is_numeric($input['chat_width_mobile'])) {
+        $output['chat_width_mobile'] = min(max(intval($input['chat_width_mobile']), 10), 100); // Limit to 10-100%
+    }
+
+    // Sanitize sticky title
+    $output['sticky_title'] = isset($input['sticky_title']) ? 1 : 0;
+
     return $output;
 }
-?>
+add_action('admin_init', 'chatbot_faq_init');

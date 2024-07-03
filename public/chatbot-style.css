@@ -24,7 +24,7 @@
     height: 400px;
     overflow-y: auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 10000; 
+    z-index: 10000;
 }
 
 #chatbot-faq h2 {
@@ -38,6 +38,12 @@
 
 #chatbot-faq li {
     margin-bottom: 10px;
+    text-align: left;
+}
+
+.chatbot-faq-list {
+    list-style-type: none;
+    padding: 0;
 }
 
 .chatbot-faq-list {
@@ -48,35 +54,87 @@
 .chatbot-question, .chatbot-answer {
     word-wrap: break-word;
     overflow-wrap: break-word;
-    white-space: pre-wrap; 
+    white-space: normal;
+    text-align: left;
+    margin-left: 0;
+    padding: 15px;
+
 }
 
 .chatbot-question {
     position: relative;
     background-color: #f2f2f2;
     color: #333;
-    max-width: 70%;
+    max-width: 75%;
     margin-bottom: 20px;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 10px;
     clear: both;
     float: left;
+    margin-left: 10px; 
 }
 
 .chatbot-answer {
     position: relative;
     background-color: #0073aa;
     color: white;
-    max-width: 70%;
+    max-width: 75%;
     margin-bottom: 20px;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 10px;
     clear: both;
     float: right;
+    margin-right: 0; 
 }
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
+}
+
+.chatbot-text {
+    display: block;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    margin-left: 10px
+}
+
+#close-chatbot {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sticky-wrapper {
+    position: sticky;
+}
+
+#chatbot-faq h2.sticky,
+#close-chatbot.sticky {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1000;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#close-chatbot {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
 }

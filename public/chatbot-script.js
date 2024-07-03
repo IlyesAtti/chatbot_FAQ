@@ -16,5 +16,11 @@ jQuery(document).ready(function($) {
 
     $('#chatbot-icon').click(function() {
         $('#chatbot-faq').toggle();
+        $('#close-chatbot').toggle($('#chatbot-faq').is(':visible'));
+    });
+
+    $('#close-chatbot').click(function() {
+        $('#chatbot-faq').hide();
+        $('#close-chatbot').hide();
     });
 });
