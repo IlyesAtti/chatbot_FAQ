@@ -30,4 +30,8 @@ jQuery(document).ready(function($) {
     if (chatbot_faq_sticky_title) {
         $('#chatbot-faq .sticky-wrapper').addClass('sticky');
     }
+
+    if ($('.sticky-wrapper').length > 0) {
+        $('#close-chatbot').show();
+    }
 });

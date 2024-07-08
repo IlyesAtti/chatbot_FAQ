@@ -84,15 +84,18 @@ function display_chatbot_icon() {
         return;
     }
 
-    $icon_url = !empty($faq_design_data['custom_icon']) ? $faq_design_data['custom_icon'] : plugin_dir_url(__FILE__) . 'icons/' . $faq_design_data['icon'];
+    $icon_url = !empty($faq_design_data['custom_icon']) ? 
+        $faq_design_data['custom_icon'] : plugin_dir_url(__FILE__) . 'icons/' . $faq_design_data['icon'];
     ?>
     <div id="chatbot-icon-wrapper">
         <img src="<?php echo esc_url($icon_url); ?>" id="chatbot-icon" alt="Chatbot Icon">
         <div id="chatbot-faq">
-            <button id="close-chatbot" style="display: none;">X</button>
-            <div class="<?php echo $faq_data['sticky_title'] ? 'sticky-wrapper' : ''; ?>">
+            <div class="<?php echo ($faq_data['sticky_title']) ? 'sticky-wrapper' : ''; ?>">
                 <h2><?php echo esc_html($faq_data['title']); ?></h2>
-                <button id="close-chatbot" style="display: none;">X</button>
+                <button id="close-chatbot" class="<?php echo 
+                    ($faq_data['sticky_title']) ? 'sticky' : ''; ?>" style="display: none;">
+                    X
+                </button>
             </div>
             <?php echo do_shortcode('[chatbot_faq]'); ?>
         </div>
