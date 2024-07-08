@@ -19,7 +19,6 @@
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 20px;
     width: 300px;
     height: 400px;
     overflow-y: auto;
@@ -28,7 +27,9 @@
 }
 
 #chatbot-faq h2 {
-    margin-top: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    text-align: center;
 }
 
 #chatbot-faq ul {
@@ -37,7 +38,7 @@
 }
 
 #chatbot-faq li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-align: left;
 }
 
@@ -58,7 +59,6 @@
     text-align: left;
     margin-left: 0;
     padding: 15px;
-
 }
 
 .chatbot-question {
@@ -71,7 +71,7 @@
     border-radius: 10px;
     clear: both;
     float: left;
-    margin-left: 10px; 
+    margin-left: 10px;
 }
 
 .chatbot-answer {
@@ -84,7 +84,7 @@
     border-radius: 10px;
     clear: both;
     float: right;
-    margin-right: 0; 
+    margin-right: 0;
 }
 
 .clearfix::after {
@@ -98,7 +98,6 @@
     padding: 0;
     margin: 0;
     text-align: left;
-    margin-left: 10px
 }
 
 #close-chatbot {
@@ -113,28 +112,8 @@
 
 .sticky-wrapper {
     position: sticky;
-}
-
-#chatbot-faq h2.sticky,
-#close-chatbot.sticky {
-    position: sticky;
     top: 0;
     background-color: white;
-    z-index: 1000;
-}
-
-.clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-#close-chatbot {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
+    z-index: 10;
+    padding: 5px 0;
 }
