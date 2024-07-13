@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
 function chatbot_faq_general_tab() {
     $faq_data = get_option('chatbot_faq_data', array(
         'title' => 'Chatbot FAQ',
@@ -7,10 +11,14 @@ function chatbot_faq_general_tab() {
         'active' => false,
         'sticky_title' => false,
     ));
+
+    $sticky_title = isset($faq_data['sticky_title']) ? $faq_data['sticky_title'] : false;
+    $active = isset($faq_data['active']) ? $faq_data['active'] : false;
     ?>
     <form method="post" action="options.php">
         <?php
         settings_fields('chatbot_faq_settings');
+        wp_nonce_field('chatbot_faq_nonce_action', 'chatbot_faq_nonce_field');
         ?>
         <table class="form-table">
             <tr>
@@ -21,7 +29,7 @@ function chatbot_faq_general_tab() {
                     <br>
                     <input type="checkbox" id="chatbot_faq_sticky_title" 
                         name="chatbot_faq_data[sticky_title]" value="1" <?php 
-                        checked(1, $faq_data['sticky_title'], true); ?>>
+                        checked(1, $sticky_title, true); ?>>
                     <label for="chatbot_faq_sticky_title">
                         Sticky Title and Close Button
                     </label>
@@ -42,25 +50,18 @@ function chatbot_faq_general_tab() {
                             $answer = isset($faq['answer']) ? 
                             preg_replace('/^\s+|\s+$/m', '', trim($faq['answer'])) : '';
                             ?>
-                            <div class="faq-item" data-index="<?php echo $index; ?>">
+                            <div class="faq-item" data-index="<?php echo esc_attr($index); ?>">
                                 <p>
                                     <label for="chatbot_faq_question_<?php 
-                                        echo $index; ?>">Question:</label><br>
-                                    <textarea id="chatbot_faq_question_
-                                        <?php echo $index; ?>" name="chatbot_faq_data[questions][
-                                        <?php echo $index; ?>][question]" rows="2" 
-                                        cols="60"><?php echo esc_textarea($question); ?>
+                                        echo esc_attr($index); ?>">Question:</label><br>
+                                    <textarea id="chatbot_faq_question_<?php echo esc_attr($index); ?>" name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][question]" rows="2" cols="60"><?php echo esc_textarea($question); ?>
                                     </textarea>
                                 </p>
                                 <p>
-                                    <label for="chatbot_faq_answer_
-                                        <?php echo $index; ?>">
+                                    <label for="chatbot_faq_answer_<?php echo esc_attr($index); ?>">
                                         Answer:
                                     </label><br>
-                                    <textarea id="chatbot_faq_answer_
-                                        <?php echo $index; ?>" name="chatbot_faq_data[questions][
-                                        <?php echo $index; ?>][answer]" rows="5"
-                                        cols="60"><?php echo esc_textarea($answer); ?>
+                                    <textarea id="chatbot_faq_answer_<?php echo esc_attr($index); ?>" name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][answer]" rows="5" cols="60"><?php echo esc_textarea($answer); ?>
                                     </textarea>
                                 </p>
                                 <button class="button remove_faq_item">
@@ -84,7 +85,7 @@ function chatbot_faq_general_tab() {
                 <td>
                     <input type="checkbox" id="chatbot_faq_active" 
                         name="chatbot_faq_data[active]" value="1" 
-                        <?php checked(1, $faq_data['active'], true); ?>>
+                        <?php checked(1, $active, true); ?>>
                     <label for="chatbot_faq_active">
                         Enable Chatbot
                     </label>
@@ -93,40 +94,6 @@ function chatbot_faq_general_tab() {
         </table>
         <?php submit_button('Save Settings'); ?>
     </form>
-    <script>
-        jQuery(document).ready(function($) {
-            $('#add_faq_item').click(function(e) {
-                e.preventDefault();
-                var index = $('#chatbot_faq_questions_wrapper .faq-item').length;
-                var newFaqItem = `
-                    <div class="faq-item" data-index="${index}">
-                        <p>
-                            <label for="chatbot_faq_question_${index}">Question:</label><br>
-                            <textarea id="chatbot_faq_question_${index}"
-                                name="chatbot_faq_data[questions][${index}][question]"
-                                rows="2" cols="60">
-                            </textarea>
-                        </p>
-                        <p>
-                            <label for="chatbot_faq_answer_${index}">Answer:</label><br>
-                            <textarea id="chatbot_faq_answer_${index}" 
-                                name="chatbot_faq_data[questions][${index}][answer]" 
-                                rows="5" cols="60">
-                            </textarea>
-                        </p>
-                        <button class="button remove_faq_item">
-                            Remove FAQ Item
-                        </button>
-                        <hr>
-                    </div>`;
-                $('#chatbot_faq_questions_wrapper').append(newFaqItem);
-            });
-
-            $('#chatbot_faq_questions_wrapper').on('click', '.remove_faq_item', function(e) {
-                e.preventDefault();
-                $(this).closest('.faq-item').remove();
-            });
-        });
-    </script>
     <?php
 }
+?>

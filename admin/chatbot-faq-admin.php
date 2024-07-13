@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
 require_once plugin_dir_path(__FILE__) . 'chatbot-faq-settings-page.php';
 require_once plugin_dir_path(__FILE__) . 'chatbot-faq-general-tab.php';
 require_once plugin_dir_path(__FILE__) . 'chatbot-faq-design-tab.php';
@@ -14,3 +19,13 @@ function chatbot_faq_add_admin_menu() {
     );
 }
 add_action('admin_menu', 'chatbot_faq_add_admin_menu');
+
+function chatbot_faq_enqueue_scripts($hook) {
+    if ('settings_page_chatbot-faq-settings' !== $hook) {
+        return;
+    }
+
+    wp_enqueue_script('chatbot-faq-admin-script', plugins_url('chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
+}
+add_action('admin_enqueue_scripts', 'chatbot_faq_enqueue_scripts');
+?>

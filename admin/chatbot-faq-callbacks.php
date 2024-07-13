@@ -1,4 +1,7 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 function chatbot_faq_title_callback() {
     $faq_data = get_option('chatbot_faq_data', array('title' => 'Chatbot FAQ'));
@@ -33,20 +36,20 @@ function chatbot_faq_questions_callback() {
             ?>
             <div class="faq-item">
                 <p>
-                    <label for="chatbot_faq_question_<?php echo $index; ?>">
+                    <label for="chatbot_faq_question_<?php echo esc_attr($index); ?>">
                         Question:
                     </label><br>
-                    <textarea id="chatbot_faq_question_<?php echo $index; ?>" 
-                        name="chatbot_faq_data[questions][<?php echo $index; ?>
+                    <textarea id="chatbot_faq_question_<?php echo esc_attr($index); ?>" 
+                        name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>
                         ][question]" rows="2" cols="60"><?php echo esc_textarea($question); ?>
                     </textarea>
                 </p>
                 <p>
-                    <label for="chatbot_faq_answer_<?php echo $index; ?>">
+                    <label for="chatbot_faq_answer_<?php echo esc_attr($index); ?>">
                         Answer:
                     </label><br>
-                    <textarea id="chatbot_faq_answer_<?php echo $index; ?>
-                        " name="chatbot_faq_data[questions][<?php echo $index; ?>
+                    <textarea id="chatbot_faq_answer_<?php echo esc_attr($index); ?>"
+                        name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>
                         ][answer]" rows="5" cols="60"><?php echo esc_textarea($answer); ?>
                     </textarea>
                 </p>
@@ -148,7 +151,7 @@ function chatbot_faq_icon_callback() {
         $checked = (isset($faq_design_data['icon']) && 
             $faq_design_data['icon'] === $icon) ? 'checked' : '';
         echo '<label>';
-        echo '<input type="radio" name="chatbot_faq_design_data[icon]" value="' . esc_attr($icon) . '" ' . $checked . '>';
+        echo '<input type="radio" name="chatbot_faq_design_data[icon]" value="' . esc_attr($icon) . '" ' . esc_attr($checked) . '>';
         echo '<img src="' . esc_url($icons_dir . $icon) . '" 
             alt="' . esc_attr($icon) . '" style="margin: 5px; width: 24px; height: 24px;">';
         echo '</label>';

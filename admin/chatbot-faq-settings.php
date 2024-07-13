@@ -1,17 +1,21 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
 require_once plugin_dir_path(__FILE__) . 'chatbot-faq-callbacks.php';
 
 function chatbot_faq_init() {
     register_setting(
         'chatbot_faq_settings',
         'chatbot_faq_data',
-        'sanitize_callback_function'
+        'chatbot_faq_sanitize_data' // Update sanitize callback
     );
 
     register_setting(
         'chatbot_faq_design_settings',
         'chatbot_faq_design_data',
-        'sanitize_callback_function'
+        'chatbot_faq_sanitize_data' // Update sanitize callback
     );
 
     add_settings_section(
@@ -118,4 +122,16 @@ function chatbot_faq_section_callback() {
 
 function chatbot_faq_design_section_callback() {
     // Empty function to render the section
+}
+
+function chatbot_faq_sanitize_data($input) {
+    $output = array();
+    foreach ($input as $key => $value) {
+        if (is_array($value)) {
+            $output[$key] = chatbot_faq_sanitize_data($value);
+        } else {
+            $output[$key] = sanitize_text_field($value);
+        }
+    }
+    return $output;
 }

@@ -1,12 +1,13 @@
 === Chatbot FAQ ===
-Contributors: Attila Ilyes
-Tags: FAQ, Chat
-Requires at least: 5.2
-Tested up to: 6.5.4
-Requires PHP: 5.6
-Stable tag: 1.0.3
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Contributors:       Attila Ilyes
+Tags:               FAQ, Chat
+Requires at least:  5.2
+Tested up to:       6.5.4
+Requires PHP:       5.6
+Stable tag:         1.0.4
+License:            GPLv2 or later
+License URI:        https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 A simple plugin for frequently asked questions in a chat format with several customization options, aiming to achieve a straightforward module without complicating or cluttering too much.
@@ -27,10 +28,12 @@ Customization options besides questions and answers:
 = Is this a cool plugin? =
 Yes
 
-== Screenshots ==
-1. Desktop view
-2. Mobile view
-
 == Changelog ==
-= 1.0.2 =
-* Initial release
+
+= 1.0.4 =
+* Initial release.
+
+== Upgrade Notice ==
+
+= 1.0.4 =
+Initial release.
