@@ -4,8 +4,10 @@ if (!defined('ABSPATH')) {
 }
 
 function chatbot_faq_load_public_assets() {
+
     wp_enqueue_style('chatbot-style', plugins_url('chatbot-faq-style.css', __FILE__), array(), '1.0.0');
     wp_enqueue_script('chatbot-script', plugins_url('chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
+
 
     $faq_design_data = get_option('chatbot_faq_design_data', array(
         'question_bg_color' => '#ffffff',
@@ -15,15 +17,12 @@ function chatbot_faq_load_public_assets() {
         'title_bg_color' => '#ffffff',
         'title_text_color' => '#000000',
         'chat_width_desktop' => '300',
-        'chat_width_mobile' => '100'
+        'chat_width_mobile' => '100',
+        'icon' => '',
+        'custom_icon' => ''
     ));
 
-    $chat_width_desktop = isset($faq_design_data['chat_width_desktop']) ? $faq_design_data['chat_width_desktop'] : '300';
-    $chat_width_mobile = isset($faq_design_data['chat_width_mobile']) ? $faq_design_data['chat_width_mobile'] : '100';
-    $sticky_title = isset($faq_data['sticky_title']) ? $faq_data['sticky_title'] : false;
-    $title_bg_color = isset($faq_design_data['title_bg_color']) ? $faq_design_data['title_bg_color'] : '#ffffff';
-    $title_text_color = isset($faq_design_data['title_text_color']) ? $faq_design_data['title_text_color'] : '#000000';
-
+    // Generate CSS inline
     $custom_css = "
     .chatbot-question {
         background-color: " . esc_attr($faq_design_data['question_bg_color']) . ";
@@ -42,22 +41,22 @@ function chatbot_faq_load_public_assets() {
         z-index: 1000;
     }
     #chatbot-faq h2 {
-        background-color: " . esc_attr($title_bg_color) . ";
-        color: " . esc_attr($title_text_color) . ";
+        background-color: " . esc_attr($faq_design_data['title_bg_color']) . ";
+        color: " . esc_attr($faq_design_data['title_text_color']) . ";
     }
     @media (min-width: 768px) {
         #chatbot-faq {
-            width: " . esc_attr($chat_width_desktop) . "%;
+            width: " . esc_attr($faq_design_data['chat_width_desktop']) . "%;
         }
     }
     @media (max-width: 767px) {
         #chatbot-faq {
-            width: " . esc_attr($chat_width_mobile) . "%;
+            width: " . esc_attr($faq_design_data['chat_width_mobile']) . "%;
         }
     }";
     wp_add_inline_style('chatbot-style', wp_kses_post($custom_css));
 
-    // Add sticky title variable
+    // Add sticky title
     $faq_data = get_option('chatbot_faq_data', array(
         'sticky_title' => false,
     ));
@@ -68,10 +67,9 @@ function chatbot_faq_load_public_assets() {
 add_action('wp_enqueue_scripts', 'chatbot_faq_load_public_assets');
 
 function chatbot_faq_display_icon() {
-    
     $faq_data = get_option('chatbot_faq_data', array(
         'active' => false,
-        'questions' => array(),
+        'title' => 'Chatbot FAQ',
         'sticky_title' => false,
     ));
     $faq_design_data = get_option('chatbot_faq_design_data', array(
@@ -84,16 +82,14 @@ function chatbot_faq_display_icon() {
     }
 
     $sticky_title = isset($faq_data['sticky_title']) ? $faq_data['sticky_title'] : false;
-
-    $icon_url = !empty($faq_design_data['custom_icon']) ? $faq_design_data['custom_icon'] : plugin_dir_url(__FILE__) . 'icons/' . $faq_design_data['icon'];
+    $icon_url = !empty($faq_design_data['custom_icon']) ? esc_url($faq_design_data['custom_icon']) : esc_url(plugin_dir_url(__FILE__) . 'icons/' . $faq_design_data['icon']);
     ?>
     <div id="chatbot-icon-wrapper">
-        <img src="<?php echo esc_url($icon_url); ?>" id="chatbot-icon" alt="Chatbot Icon">
+        <img src="<?php echo esc_url($icon_url); ?>" id="chatbot-icon" alt="<?php esc_attr_e('Chatbot Icon', 'your-text-domain'); ?>">
         <div id="chatbot-faq">
-            <div class="<?php echo ($sticky_title) ? 'sticky-wrapper' : ''; ?>">
+            <div class="<?php echo esc_attr(($sticky_title) ? 'sticky-wrapper' : ''); ?>">
                 <h2><?php echo esc_html($faq_data['title']); ?></h2>
-                <button id="close-chatbot" class="<?php echo 
-                    ($sticky_title) ? 'sticky' : ''; ?>" style="display: none;">
+                <button id="close-chatbot" class="<?php echo esc_attr(($sticky_title) ? 'sticky' : ''); ?>" style="display: none;">
                     X
                 </button>
             </div>
@@ -103,11 +99,13 @@ function chatbot_faq_display_icon() {
     <?php
 }
 
-
 add_action('wp_footer', 'chatbot_faq_display_icon');
 
 function chatbot_faq_render_faq() {
-    $faq_data = get_option('chatbot_faq_data', array('title' => 'Chatbot FAQ', 'questions' => array()));
+    $faq_data = get_option('chatbot_faq_data', array(
+        'title' => 'Chatbot FAQ',
+        'questions' => array()
+    ));
     $title = isset($faq_data['title']) ? $faq_data['title'] : 'Chatbot FAQ';
     $questions = isset($faq_data['questions']) ? $faq_data['questions'] : array();
 
@@ -118,14 +116,12 @@ function chatbot_faq_render_faq() {
         <?php foreach ($questions as $index => $faq) : ?>
             <li class="chatbot-question">
                 <span class="chatbot-text">
-                    <?php echo nl2br(esc_html(preg_replace('/^\s+|\s+$/m', '', 
-                        trim($faq['question'])))); 
-                    ?>
+                    <?php echo wp_kses_post($faq['question']); ?>
                 </span>
             </li>
             <li class="chatbot-answer">
                 <span class="chatbot-text">
-                    <?php echo wp_kses_post(preg_replace('/^\s+|\s+$/m', '', trim($faq['answer']))); ?>
+                    <?php echo wp_kses_post($faq['answer']); ?>
                 </span>
             </li>
         <?php endforeach; ?>

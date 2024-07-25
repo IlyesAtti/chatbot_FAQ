@@ -130,7 +130,12 @@ function chatbot_faq_sanitize_data($input) {
         if (is_array($value)) {
             $output[$key] = chatbot_faq_sanitize_data($value);
         } else {
-            $output[$key] = sanitize_text_field($value);
+            if ($key === 'questions') {
+                // Allow HTML code in Questions and Answers for formatting purposes
+                $output[$key] = array_map('wp_kses_post', $value);
+            } else {
+                $output[$key] = sanitize_text_field($value);
+            }
         }
     }
     return $output;
