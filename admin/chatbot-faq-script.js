@@ -33,4 +33,3 @@ jQuery(document).ready(function($) {
         $(this).closest('.faq-item').remove();
     });
 });
-
