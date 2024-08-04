@@ -25,8 +25,21 @@ function chatbot_faq_load_public_assets() {
 
     // Generate CSS inline
     $custom_css = "
-     
-    #close-chatbot.sticky{
+    a:where(:not(.wp-element-button)) {
+        color: #0069ff;
+        text-decoration: none; 
+    }
+    a:where(:not(.wp-element-button)):hover {
+        color: #7ed6ff;
+        text-decoration: underline;
+    }
+    a:where(:not(.wp-element-button)):visited {
+        color: #da8f2d;
+    }
+    a:where(:not(.wp-element-button)):active {
+        color: #a33919; /
+    } 
+    #close-chatbot.sticky {
     color: " . esc_attr($faq_design_data['title_text_color']) . ";
     }
     .chatbot-question {
