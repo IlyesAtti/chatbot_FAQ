@@ -128,3 +128,18 @@
     top: 10px;
     display: block;
 }
+
+a {
+    color: #0069ff;
+    text-decoration: none; 
+}
+a:hover {
+    color: #7ed6ff;
+    text-decoration: underline;
+}
+a:visited {
+    color: #da8f2d;
+}
+a:active {
+    color: #a33919; /
+}

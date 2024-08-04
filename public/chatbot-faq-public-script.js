@@ -25,6 +25,7 @@ jQuery(document).ready(function($) {
         $('#chatbot-faq').hide();
         $('#close-chatbot').hide();
     });
+    
     // Apply sticky class if enabled
     if (chatbot_faq_sticky_title) {
         $('#chatbot-faq .sticky-wrapper').addClass('sticky');

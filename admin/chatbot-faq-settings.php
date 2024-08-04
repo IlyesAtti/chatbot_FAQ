@@ -7,7 +7,7 @@ require_once plugin_dir_path(__FILE__) . 'chatbot-faq-callbacks.php';
 
 function chatbot_faq_init() {
     register_setting(
-        'chatbot_faq_settings',
+        'chatbot_faq_general_settings',
         'chatbot_faq_data',
         'sanitize_callback_function'
     );
@@ -19,9 +19,9 @@ function chatbot_faq_init() {
     );
 
     add_settings_section(
-        'chatbot_faq_section',
-        'Chatbot FAQ Settings',
-        'chatbot_faq_section_callback',
+        'chatbot_faq_general_section',
+        'General Settings',
+        'chatbot_faq_general_section_callback',
         'chatbot-faq-settings'
     );
 
@@ -38,7 +38,7 @@ function chatbot_faq_init() {
         'FAQ Title',
         'chatbot_faq_title_callback',
         'chatbot-faq-settings',
-        'chatbot_faq_section'
+        'chatbot_faq_general_section'
     );
 
     add_settings_field(
@@ -114,12 +114,15 @@ function chatbot_faq_init() {
         'chatbot_faq_design_section'
     );
 }
-add_action('admin_init', 'chatbot_faq_init');
+add_action('admin_init', 'chatbot_faq_init', 'chatbot_faq_register_settings');
 
 function chatbot_faq_section_callback() {
     // Empty function to render the section
 }
 
 function chatbot_faq_design_section_callback() {
+    // Empty function to render the section
+}
+function chatbot_faq_general_section_callback() {
     // Empty function to render the section
 }

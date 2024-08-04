@@ -49,14 +49,15 @@ function chatbot_faq_general_tab() {
     ?>
     <form method="post" action="options.php">
         <?php
-        settings_fields('chatbot_faq_settings');
-        wp_nonce_field('chatbot_faq_nonce_action', 'chatbot_faq_nonce_field');
+        wp_nonce_field('chatbot_faq_save_settings', 'chatbot_faq_nonce');
+        settings_fields('chatbot_faq_general_settings');
+
         ?>
         <table class="form-table">
             <tr>
                 <th scope="row">FAQ Title:</th>
                 <td>
-                    <input type="text" name="chatbot_faq_data[title]" value="<?php echo esc_attr($faq_data['title']); ?>" size="60">
+                    <input type="text" size = '60' name="chatbot_faq_data[title]" value="<?php echo esc_attr(get_option('chatbot_faq_data')['title']); ?>">
                     <br>
                     <input type="checkbox" id="chatbot_faq_sticky_title" name="chatbot_faq_data[sticky_title]" value="1" <?php checked(1, $sticky_title, true); ?>>
                     <label for="chatbot_faq_sticky_title">

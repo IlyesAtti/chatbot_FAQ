@@ -7,6 +7,7 @@ function chatbot_faq_load_public_assets() {
 
     wp_enqueue_style('chatbot-style', plugins_url('chatbot-faq-style.css', __FILE__), array(), '1.0.0');
     wp_enqueue_script('chatbot-script', plugins_url('chatbot-faq-public-script.js', __FILE__), array('jquery'), '1.0.0', true);
+    wp_enqueue_script('chatbot-script', plugins_url('../admin/chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
 
 
     $faq_design_data = get_option('chatbot_faq_design_data', array(
@@ -18,12 +19,16 @@ function chatbot_faq_load_public_assets() {
         'title_text_color' => '#000000',
         'chat_width_desktop' => '25',
         'chat_width_mobile' => '80',
-        'icon' => '',
+        'icon' => 'black-right.png',
         'custom_icon' => ''
     ));
 
     // Generate CSS inline
     $custom_css = "
+     
+    #close-chatbot.sticky{
+    color: " . esc_attr($faq_design_data['title_text_color']) . ";
+    }
     .chatbot-question {
         background-color: " . esc_attr($faq_design_data['question_bg_color']) . ";
         color: " . esc_attr($faq_design_data['question_text_color']) . ";
@@ -117,8 +122,6 @@ function chatbot_faq_render_faq() {
 
     ob_start();
     ?>
-
-    <h2><?php echo esc_html($title); ?></h2>
     <ul class="chatbot-faq-list clearfix">
         <?php foreach ($questions as $index => $faq) : ?>
             <li class="chatbot-question">
