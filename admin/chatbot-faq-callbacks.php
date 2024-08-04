@@ -111,7 +111,7 @@ function chatbot_faq_icon_callback() {
         $checked = ( isset( $faq_design_data['icon'] ) && $faq_design_data['icon'] === $icon ) ? 'checked' : '';
         ?>
         <label>
-            <input type="radio" name="chatbot_faq_design_data[icon]" value="<?php echo esc_attr( $icon ); ?>" <?php echo $checked; ?>>
+            <input type="radio" name="chatbot_faq_design_data[icon]" value="<?php echo esc_attr( $icon ); ?>" <?php echo esc_attr($checked); ?>>
             <img src="<?php echo esc_url( $icons_dir . $icon ); ?>" 
                  alt="<?php echo esc_attr( $icon ); ?>" style="margin: 5px; width: 24px; height: 24px;">
         </label>

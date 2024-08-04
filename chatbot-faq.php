@@ -2,11 +2,11 @@
 /*
 Plugin Name: Chatbot FAQ
 Description: A simple plugin for frequently asked questions in a chat format with several customization options.
-Version: 1.0.4
+Version: 1.0.5
 Author: Attila Ilyes
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: chatbot-faq
+Text Domain: chatbot_FAQ
 */
 
 if (!defined('ABSPATH')) {

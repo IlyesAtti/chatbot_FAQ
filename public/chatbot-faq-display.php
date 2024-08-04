@@ -16,8 +16,8 @@ function chatbot_faq_load_public_assets() {
         'answer_text_color' => '#000000',
         'title_bg_color' => '#ffffff',
         'title_text_color' => '#000000',
-        'chat_width_desktop' => '300',
-        'chat_width_mobile' => '100',
+        'chat_width_desktop' => '25',
+        'chat_width_mobile' => '80',
         'icon' => '',
         'custom_icon' => ''
     ));
@@ -102,26 +102,33 @@ function chatbot_faq_display_icon() {
 add_action('wp_footer', 'chatbot_faq_display_icon');
 
 function chatbot_faq_render_faq() {
-    $faq_data = get_option('chatbot_faq_data', array(
-        'title' => 'Chatbot FAQ',
-        'questions' => array()
-    ));
-    $title = isset($faq_data['title']) ? $faq_data['title'] : 'Chatbot FAQ';
+    $faq_data = get_option('chatbot_faq_data', array('title' => 'Chatbot FAQ', 'questions' => array()));
+    $title = isset($faq_data['title']) ? sanitize_text_field($faq_data['title']) : 'Chatbot FAQ';
     $questions = isset($faq_data['questions']) ? $faq_data['questions'] : array();
+
+    if (!function_exists('convert_markdown_to_html')) {
+        require_once plugin_dir_path(__FILE__) . '/Parsedown.php'; 
+
+        function convert_markdown_to_html($text) {
+            $Parsedown = new Parsedown();
+            return $Parsedown->text($text);
+        }
+    }
 
     ob_start();
     ?>
 
+    <h2><?php echo esc_html($title); ?></h2>
     <ul class="chatbot-faq-list clearfix">
         <?php foreach ($questions as $index => $faq) : ?>
             <li class="chatbot-question">
                 <span class="chatbot-text">
-                    <?php echo wp_kses_post($faq['question']); ?>
+                    <?php echo wp_kses_post(convert_markdown_to_html($faq['question'])); ?>
                 </span>
             </li>
             <li class="chatbot-answer">
                 <span class="chatbot-text">
-                    <?php echo wp_kses_post($faq['answer']); ?>
+                    <?php echo wp_kses_post(convert_markdown_to_html($faq['answer'])); ?>
                 </span>
             </li>
         <?php endforeach; ?>
@@ -130,4 +137,6 @@ function chatbot_faq_render_faq() {
     <?php
     return ob_get_clean();
 }
+
 add_shortcode('chatbot_faq', 'chatbot_faq_render_faq');
+
