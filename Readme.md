@@ -41,3 +41,6 @@ Here the basic sytanx: https://www.markdownguide.org/basic-syntax/
 
 = 1.0.4 =
 Initial release.
+
+= 1.0.5 =
+Increse security.

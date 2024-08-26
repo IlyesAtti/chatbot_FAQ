@@ -15,7 +15,7 @@ function get_chatbot_faq_data() {
 
 function chatbot_faq_save_options() {
     if ( ! isset( $_POST['chatbot_faq_nonce_field'] ) || ! wp_verify_nonce( $_POST['chatbot_faq_nonce_field'], 'chatbot_faq_nonce_action' ) ) {
-        wp_die('Nonce verification failed');
+        wp_die( 'Nonce verification failed!' );
     }
 
     $faq_data = array(
@@ -49,9 +49,8 @@ function chatbot_faq_general_tab() {
     ?>
     <form method="post" action="options.php">
         <?php
-        wp_nonce_field('chatbot_faq_save_settings', 'chatbot_faq_nonce');
-        settings_fields('chatbot_faq_general_settings');
-
+        wp_nonce_field('chatbot_faq_nonce_action', 'chatbot_faq_nonce_field');
+        settings_fields('chatbot_faq_general_settings');  
         ?>
         <table class="form-table">
             <tr>
