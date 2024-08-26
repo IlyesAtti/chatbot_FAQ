@@ -30,7 +30,6 @@ function chatbot_faq_enqueue_scripts($hook) {
     wp_enqueue_script('chatbot-faq-script', plugins_url('chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
 
     $sticky_title = get_option('chatbot_faq_sticky_title', false);
-    error_log('chatbot_faq_sticky_title: ' . $sticky_title);
 
     wp_localize_script('chatbot-faq-script', 'chatbotFaqSettings', array(
         'sticky_title' => $sticky_title

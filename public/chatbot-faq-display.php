@@ -7,7 +7,7 @@ function chatbot_faq_load_public_assets() {
     if (!is_admin()) {
         wp_enqueue_style('chatbot-style', plugins_url('chatbot-faq-style.css', __FILE__), array(), '1.0.0');
         wp_enqueue_script('chatbot-script', plugins_url('chatbot-faq-public-script.js', __FILE__), array('jquery'), '1.0.0', true);
-        wp_enqueue_script('chatbot-script', plugins_url('../admin/chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
+        wp_enqueue_script('chatbot-admin-script', plugins_url('../admin/chatbot-faq-script.js', __FILE__), array('jquery'), '1.0.0', true);
     }
 
     $faq_design_data = get_option('chatbot_faq_design_data', array(
@@ -155,4 +155,3 @@ function chatbot_faq_render_faq() {
 }
 
 add_shortcode('chatbot_faq', 'chatbot_faq_render_faq');
-
