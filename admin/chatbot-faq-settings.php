@@ -9,13 +9,13 @@ function chatbot_faq_init() {
     register_setting(
         'chatbot_faq_general_settings',
         'chatbot_faq_data',
-        'sanitize_callback_function'
+        'chatbot_faq_sanitize_callback_function'
     );
 
     register_setting(
         'chatbot_faq_design_settings',
         'chatbot_faq_design_data',
-        'sanitize_callback_function'
+        'chatbot_faq_sanitize_callback_function'
     );
 
     add_settings_section(

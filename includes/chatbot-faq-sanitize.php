@@ -9,7 +9,7 @@ function verify_chatbot_faq_nonce() {
     }
 }
 
-function sanitize_callback_function($input) {
+function chatbot_faq_sanitize_callback_function($input) {
     verify_chatbot_faq_nonce();
 
     if (!function_exists('recursive_sanitize_text_field')) {

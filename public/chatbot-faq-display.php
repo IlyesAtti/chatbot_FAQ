@@ -103,7 +103,8 @@ function chatbot_faq_display_icon() {
     $icon_url = !empty($faq_design_data['custom_icon']) ? esc_url($faq_design_data['custom_icon']) : esc_url(plugin_dir_url(__FILE__) . 'icons/' . $faq_design_data['icon']);
     ?>
     <div id="chatbot-icon-wrapper">
-        <img src="<?php echo esc_url($icon_url); ?>" id="chatbot-icon" alt="<?php esc_attr_e('Chatbot Icon', 'your-text-domain'); ?>">
+        <img src="<?php echo esc_url($icon_url); ?>" id="chatbot-icon" alt="<?php echo esc_attr_e('Chatbot Icon', 'your-text-domain'); ?>">
+
         <div id="chatbot-faq">
             <div class="<?php echo esc_attr(($sticky_title) ? 'sticky-wrapper' : ''); ?>">
                 <h2><?php echo esc_html($faq_data['title']); ?></h2>
