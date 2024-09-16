@@ -9,7 +9,7 @@ function chatbot_faq_settings_page() {
     if (isset($_GET['_wpnonce'])) {
         $nonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_GET['_wpnonce'])) : '';
         if (!wp_verify_nonce($nonce, 'chatbot-faq-settings')) {
-            echo '<div class="error"><p>Nonce verification failed. Please try again.</p></div>';
+            echo esc_html('<div class="error"><p>Nonce verification failed. Please try again.</p></div>');
             return;
         }
     } 

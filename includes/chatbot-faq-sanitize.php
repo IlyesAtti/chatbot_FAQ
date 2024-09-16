@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function verify_chatbot_faq_nonce() {
-    if ( ! isset( $_POST['chatbot_faq_nonce_field'] ) || ! wp_verify_nonce( $_POST['chatbot_faq_nonce_field'], 'chatbot_faq_nonce_action' ) ) {
+    if ( ! isset( $_POST['chatbot_faq_nonce_field'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['chatbot_faq_nonce_field'])), 'chatbot_faq_nonce_action' )) {
         wp_die( 'Nonce verification failed!' );
     }
 }
@@ -17,15 +17,15 @@ function chatbot_faq_sanitize_callback_function($input) {
             if (is_array($value)) {
                 return array_map('recursive_sanitize_text_field', $value);
             } else {
-                return wp_kses_post($value);
+                return sanitize_text_field($value);
             }
         }
     }
 
     $output = recursive_sanitize_text_field($input);
 
-    if (isset($_POST['chatbot_faq_nonce_field']) && wp_verify_nonce($_POST['chatbot_faq_nonce_field'], 'chatbot_faq_nonce_action')) {
-        if (isset($_FILES['chatbot_faq_custom_icon']) && $_FILES['chatbot_faq_custom_icon']['size'] > 0) {
+    if (isset($_POST['chatbot_faq_nonce_field']) && wp_verify_nonce( sanitize_text_field( wp_unslash ($_POST['chatbot_faq_nonce_field'])), 'chatbot_faq_nonce_action')) {
+        if (isset($_FILES['chatbot_faq_custom_icon']) && isset($_FILES['chatbot_faq_custom_icon']['size']) && $_FILES['chatbot_faq_custom_icon']['size'] > 0) {
             $uploaded = media_handle_upload('chatbot_faq_custom_icon', 0);
             if (!is_wp_error($uploaded)) {
                 $output['custom_icon'] = wp_get_attachment_url($uploaded);

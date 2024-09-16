@@ -35,24 +35,50 @@ function chatbot_faq_design_tab() {
     $answer_bg_color = isset($faq_design_data['answer_bg_color']) ? $faq_design_data['answer_bg_color'] : '#ffffff';
     $answer_text_color = isset($faq_design_data['answer_text_color']) ? $faq_design_data['answer_text_color'] : '#000000';
 
-    if (isset($_FILES['chatbot_faq_custom_icon']) && !empty($_FILES['chatbot_faq_custom_icon']['name'])) {
-        if (isset($_POST['chatbot_faq_nonce']) && wp_verify_nonce($_POST['chatbot_faq_nonce'], 'chatbot_faq_save_settings')) {
-            $uploaded_file = $_FILES['chatbot_faq_custom_icon'];
-            $upload_overrides = array('test_form' => false);
 
-            $movefile = wp_handle_upload($uploaded_file, $upload_overrides);
-            if ($movefile && !isset($movefile['error'])) {
-                $faq_design_data['custom_icon'] = $movefile['url'];
-                update_option('chatbot_faq_design_data', $faq_design_data);
-                echo esc_attr('<div class="updated"><p>Icon uploaded successfully.</p></div>');
+    if (isset($_FILES['chatbot_faq_custom_icon']) && !empty($_FILES['chatbot_faq_custom_icon']['name'])) {
+        if (isset($_POST['chatbot_faq_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['chatbot_faq_nonce'])), 'chatbot_faq_save_settings')) {
+            if (isset($_FILES['chatbot_faq_custom_icon']['error']) && $_FILES['chatbot_faq_custom_icon']['error'] === UPLOAD_ERR_OK) {
+                if (isset($_FILES['chatbot_faq_custom_icon']['tmp_name'], $_FILES['chatbot_faq_custom_icon']['name'])) {
+                    
+                    $tmp_name = sanitize_file_name(wp_unslash($_FILES['chatbot_faq_custom_icon']['tmp_name']));
+                    $file_name = sanitize_file_name(wp_unslash($_FILES['chatbot_faq_custom_icon']['name']));
+                    
+                    $file_type = wp_check_filetype_and_ext($tmp_name, $file_name);
+                    $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
+    
+                    if (in_array($file_type['ext'], $allowed_types) && in_array($file_type['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+                        
+                        $uploaded_file = array(
+                            'name' => $file_name,
+                            'tmp_name' => $tmp_name
+                        );
+    
+                        $upload_overrides = array('test_form' => false);
+    
+                        $movefile = wp_handle_upload($uploaded_file, $upload_overrides);
+    
+                        if ($movefile && !isset($movefile['error'])) {
+                            $faq_design_data['custom_icon'] = esc_url_raw($movefile['url']);
+    
+                            update_option('chatbot_faq_design_data', $faq_design_data);
+                        } else {
+                            echo '<div class="error"><p>' . esc_html__('Error: ', 'text-domain') . esc_html($movefile['error']) . '</p></div>';
+                        }
+                    } else {
+                        echo '<div class="error"><p>' . esc_html__('Error: Invalid file type. Only JPG, PNG, and GIF are allowed.', 'text-domain') . '</p></div>';
+                    }
+                } else {
+                    echo '<div class="error"><p>' . esc_html__('Error: File details are missing.', 'text-domain') . '</p></div>';
+                }
             } else {
-                echo esc_attr('<div class="error"><p>Error: ' . esc_html($movefile['error']) . '</p></div>');
+                echo '<div class="error"><p>' . esc_html__('Error: File upload error.', 'text-domain') . '</p></div>';
             }
         } else {
-            echo esc_attr ('<div class="error"><p>Error: Nonce verification failed.</p></div>');
+            echo '<div class="error"><p>' . esc_html__('Error: Nonce verification failed.', 'text-domain') . '</p></div>';
         }
     }
-
+    
     ?>
     <form method="post" action="options.php" enctype="multipart/form-data">
         <?php
