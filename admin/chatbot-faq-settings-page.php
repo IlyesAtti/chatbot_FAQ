@@ -22,11 +22,15 @@ function chatbot_faq_settings_page() {
         <h1><?php esc_html_e('Chatbot FAQ Settings', 'your-text-domain'); ?></h1>
         
         <h2 class="nav-tab-wrapper">
-            <a href="<?php echo esc_url(admin_url('options-general.php?page=chatbot-faq-settings&_wpnonce=' . wp_create_nonce('chatbot-faq-settings'))); ?>" class="nav-tab <?php echo esc_url ($tab === 'general') ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('General', 'your-text-domain'); ?>
+            <a 
+                href="<?php echo esc_url(admin_url('options-general.php?page=chatbot-faq-settings&_wpnonce=' . wp_create_nonce('chatbot-faq-settings'))); ?>" 
+                class="nav-tab <?php echo esc_url ($tab === 'general') ? 'nav-tab-active' : ''; ?>">
+                    <?php esc_html_e('General', 'your-text-domain'); ?>
             </a>
-            <a href="<?php echo esc_url(admin_url('options-general.php?page=chatbot-faq-settings&tab=design&_wpnonce=' . wp_create_nonce('chatbot-faq-settings'))); ?>" class="nav-tab <?php echo esc_url ($tab === 'design') ? 'nav-tab-active' : ''; ?>">
-                <?php esc_html_e('Design', 'your-text-domain'); ?>
+            <a 
+                href="<?php echo esc_url(admin_url('options-general.php?page=chatbot-faq-settings&tab=design&_wpnonce=' . wp_create_nonce('chatbot-faq-settings'))); ?>" 
+                class="nav-tab <?php echo esc_url ($tab === 'design') ? 'nav-tab-active' : ''; ?>">
+                    <?php esc_html_e('Design', 'your-text-domain'); ?>
             </a>
         </h2>
 

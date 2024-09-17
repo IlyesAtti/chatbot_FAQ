@@ -37,14 +37,22 @@ function chatbot_faq_questions_callback() {
                     <label for="chatbot_faq_question_<?php echo esc_attr($index); ?>">
                         Question:
                     </label><br>
-                    <textarea id="chatbot_faq_question_<?php echo esc_attr($index); ?>" name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][question]" rows="2" cols="60"><?php echo wp_kses_post($question); ?>
+                    <textarea 
+                        id="chatbot_faq_question_<?php echo esc_attr($index); ?>" 
+                        name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][question]" 
+                        rows="2" 
+                        cols="60"><?php echo wp_kses_post($question); ?>
                     </textarea>
                 </p>
                 <p>
                     <label for="chatbot_faq_answer_<?php echo esc_attr($index); ?>">
                         Answer:
                     </label><br>
-                    <textarea id="chatbot_faq_answer_<?php echo esc_attr($index); ?>"name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][answer]" rows="5" cols="60"><?php echo wp_kses_post($answer); ?>
+                    <textarea 
+                        id="chatbot_faq_answer_<?php echo esc_attr($index); ?>"
+                        name="chatbot_faq_data[questions][<?php echo esc_attr($index); ?>][answer]" 
+                        rows="5" 
+                        cols="60"><?php echo wp_kses_post($answer); ?>
                     </textarea>
                 </p>
                 <hr>
@@ -111,9 +119,14 @@ function chatbot_faq_icon_callback() {
         $checked = ( isset( $faq_design_data['icon'] ) && $faq_design_data['icon'] === $icon ) ? 'checked' : '';
         ?>
         <label>
-            <input type="radio" name="chatbot_faq_design_data[icon]" value="<?php echo esc_attr( $icon ); ?>" <?php echo esc_attr($checked); ?>>
-            <img src="<?php echo esc_url( $icons_dir . $icon ); ?>" 
-                 alt="<?php echo esc_attr( $icon ); ?>" style="margin: 5px; width: 24px; height: 24px;">
+            <input 
+                type="radio" 
+                name="chatbot_faq_design_data[icon]" 
+                value="<?php echo esc_attr( $icon ); ?>" <?php echo esc_attr($checked); ?>>
+            <img 
+                src="<?php echo esc_url( $icons_dir . $icon ); ?>" 
+                alt="<?php echo esc_attr( $icon ); ?>" 
+                style="margin: 5px; width: 24px; height: 24px;">
         </label>
         <?php
     }
